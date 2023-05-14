@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-bs-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="icon"
+      href="https://i.328888.xyz/2023/04/14/ixDL13.jpeg"
+      type="image/png" />
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <link
+      href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.3.0-alpha3/css/bootstrap.css"
+      rel="stylesheet" />
+    <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.3.0-alpha3/js/bootstrap.bundle.js"></script>
+    <title>4-4fill()填充数组copyWithin()</title>
+  </head>
+  <body>
+    <p>
+      fill()方法是JavaScript数组对象的一个方法，它可以用一个固定值填充一个数组中从起始索引到终止索引内的全部元素。它是破坏性方法,会修改原数组并返回
+      <br />array.fill(value, start, end)
+      <br />其中，value是用来填充数组元素的值，start是开始填充位置的索引（默认为0），end是停止填充位置的索引（默认为array.length）。注意，end索引本身不包括在内
+    </p>
+    <script>
+      // 例如，下面的代码使用"Runoob"填充了数组fruits的所有元素：
+      let fruits = ["Banana", "Orange", "Apple", "Mango"];
+      fruits.fill("Runoob");
+      console.log(fruits); // ["Runoob", "Runoob", "Runoob", "Runoob"]
+
+      // 下面的代码使用"Runoob"填充了数组fruits从索引1到索引3（不包括）的元素：
+      let fruits2 = ["Banana", "Orange", "Apple", "Mango"];
+      fruits2.fill("Runoob", 1, 3);
+      console.log(fruits2); // ["Banana", "Runoob", "Runoob", "Mango"]
+    </script>
+    <p>
+      copyWithin()方法是用于从数组的指定位置拷贝元素到数组的另一个指定位置中的。它的语法是：
+      <br />javascript array.copyWithin(target, start, end)
+      <br />其中，target是复制到指定目标索引位置，start是元素复制的起始位置，end是停止复制的索引位置（不包括end）。这个方法会修改原始数组,是破坏性方法，但不会改变数组的长度
+    </p>
+    <script>
+      let arr1 = [10, 20, 30, 40, 50];
+      arr1.copyWithin(-2, 1, 3); // 将索引为1~3(不含)的元素复制到索引为-2开始的位置
+      console.log(arr1); // [10, 20, 20, 30, 50]
+      let arr2 = ["a", "b", "c", "d", "e"];
+      arr2.copyWithin(0, 2); // 将索引为2到末尾的元素复制到索引为0的位置
+      console.log(arr2); // ["c", "d", "e", "d", "e"]
+      let arr3 = [1, 2, 3, 4, 5];
+      arr3.copyWithin(1, -3, -1); // 将索引为-3到-1(不含)的元素复制到索引为1的位置
+      console.log(arr3); // [1, 3, 4, 4, 5]
+    </script>
+  </body>
+</html>

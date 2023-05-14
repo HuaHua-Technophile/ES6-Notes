@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-bs-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="icon"
+      href="https://i.328888.xyz/2023/04/14/ixDL13.jpeg"
+      type="image/png" />
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <link
+      href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.3.0-alpha3/css/bootstrap.css"
+      rel="stylesheet" />
+    <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.3.0-alpha3/js/bootstrap.bundle.js"></script>
+    <title>
+      8-3Promise对象的then()catch()成功,失败状态函数finally()最终执行函数
+    </title>
+  </head>
+  <body>
+    <script>
+      let p1 = new Promise(function (resolve, reject) {
+        setTimeout(function () {
+          let num = Math.random();
+          num > 0.5
+            ? resolve(
+                "Promise的状态改为fulfilled,并且传入的终值为这段文本(也可以是其他任何类型的数据)"
+              )
+            : reject(
+                "Promise的状态改为rejected,并且传入的据因为这段文本(也可以是其他任何类型的数据)"
+              );
+        }, 500); //设定延时器,模拟异步请求中的网络响应延时
+      });
+      console.log(p1);
+
+      /* Promise.prototype.then()方法,它可依次填入fulfilled状态(一般用作异步请求成功时)的回调函数,和rejected状态(一般用作异步请求失败时)的回调函数.then方法默认返回一个新的 Promise 对象，它的状态和值取决于 then 的回调函数的返回值。因此可以链式调用.
+      promise对象.then( 成功回调函数(), 失败回调函数() ) */
+      p1.then(
+        function (json) {
+          console.log(`1.请求成功=>`, json);
+        },
+        function (err) {
+          console.log(`1.错误信息:${err}`);
+        }
+      );
+      /*Promise.prototype.catch()方法是Promise.prototype.then(null,rejection)的简写，专门用于指定发生错误时的回调函数。*/
+      p1.then(function (json) {
+        console.log(`2.请求成功=>`, json);
+      }).catch(function (err) {
+        console.log(`2.错误信息:${err}`);
+      }); //因为than方法默认返回一个Promise对象(catch()方法是than的简写,所以也会返回一个Promise对象),所以可以点语法链式调用
+      p1.then((json) => {
+        console.log(`3.请求成功=>`, json);
+      })
+        .catch((err) => {
+          console.log(`3.错误信息:${err}`);
+        })
+        .finally(() => `执行完毕`);
+      /* Promise 对象的 finally 方法是用来指定在 Promise 结束时，无论状态是 fulfilled 或者是 rejected，都会执行的回调函数。这样可以避免同样的语句需要在 then 和 catch 中都要写一次的情况。finally 方法也默认返回一个新的 Promise 对象，它不接受任何参数，也不依赖于 Promise 的执行结果。如果 finally 回调中抛出错误或者返回一个被拒绝的 Promise，那么新的 Promise 也会变为 rejected 状态*/
+      p1.then((res1) => {
+        console.log("res1=>", res1);
+        return "abc"; // then()方法回调函数中,可以直接返回某个值.上一个then()方法回调函数中return返回的内容,会作为下一个then()方法回调函数的参数
+      })
+        .then((res2) => {
+          console.log("res2=>", res2);
+          return 123;
+        })
+        .then((res3) => {
+          console.log("res3=>", res3);
+          // then()方法回调函数中,也可以返回promise对象
+          return new Promise(function (resolve, reject) {
+            let num = Math.random();
+            if (num > 0.5) {
+              resolve("内嵌返回的新对象请求成功,让状态变为fulfilled");
+            } else {
+              reject("内嵌返回的新对象请求失败,让状态改成rejected");
+            }
+          });
+        })
+        .then((res4) => {
+          console.log("res4=>", res4);
+        })
+        .catch((err) => {
+          console.log(err); // 建议: 如果有多个then()链式调用的时候, catch()方法放到最后, catch()方法可以捕获任何一个promise对对象拒绝状态
+        });
+    </script>
+  </body>
+</html>

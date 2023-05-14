@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-bs-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="icon"
+      href="https://i.328888.xyz/2023/04/14/ixDL13.jpeg"
+      type="image/png" />
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <link
+      href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.3.0-alpha3/css/bootstrap.css"
+      rel="stylesheet" />
+    <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.3.0-alpha3/js/bootstrap.bundle.js"></script>
+    <title>5展开运算符(展开语法)剩余运算符</title>
+  </head>
+  <body>
+    <ol>
+      <li>展开运算符可以用来复制数组或对象，而不改变原始数据</li>
+      <li>
+        展开运算符可以用来合并多个数组或对象，而不需要使用concat或Object.assign方法
+      </li>
+      <li>展开运算符可以用来将数组作为函数的参数传递，而不需要使用apply方法</li>
+      <li>
+        展开运算符可以用来将字符串转换为数组，或者将类数组对象转换为真正的数组
+      </li>
+      <li>展开运算符可以用来配合set方法去除数组中的重复元素</li>
+    </ol>
+    <ol>
+      <li>剩余运算符可以用来定义可变参数的函数，而不需要使用arguments对象</li>
+      <li>
+        剩余运算符可以用来获取数组或对象的一部分，而不需要使用slice或其他方法
+      </li>
+      <li>剩余运算符可以用来合并多个对象，而不需要使用Object.assign方法</li>
+      <li>剩余运算符可以用来配合解构赋值，将多个元素或属性赋值给一个变量</li>
+    </ol>
+    <ol>
+      <li>展开运算符不能展开对象字面量的值，因为它们不是可迭代的</li>
+      <li>
+        展开运算符不会克隆相同的属性，如果有重复的属性，后面的会覆盖前面的
+      </li>
+      <li>
+        展开运算符只能进行浅拷贝，如果对象中包含非原始值（如数组或对象），那么展开后的对象和原对象之间仍然有引用关系
+      </li>
+      <li>剩余运算符只能放在最后一个参数或属性的位置，否则会报错</li>
+      <li>剩余运算符不能单独使用，必须配合函数参数、数组解构或对象解构</li>
+      <li>剩余运算符不能用于非可迭代的对象，否则会报错</li>
+    </ol>
+    <script>
+      // 展开运算符复制数组
+      let studentNames = ["Daniel", "Jane", "Joe"];
+      let names = [...studentNames];
+      console.log(names); // ["Daniel","Jane","Joe"]
+
+      // 展开运算符复制对象
+      let user = { name: "John Doe", age: 10 };
+      let copiedUser = { ...user };
+      console.log(copiedUser); // { name: "John Doe", age: 10 }
+
+      // 展开运算符合并数组
+      let femaleNames = ["Daniel", "Peter", "Joe"];
+      let maleNames = ["Sandra", "Lucy", "Jane"];
+      let allNames = [...femaleNames, ...maleNames];
+      console.log(allNames); // ["Daniel","Peter","Joe","Sandra","Lucy","Jane"]
+
+      // 展开运算符合并对象
+      let userName = { name: "John Doe" };
+      let userSex = { sex: "Male" };
+      let user2 = { ...userName, ...userSex };
+      console.log(user2); // { name: "John Doe", sex: "Male" }
+
+      // 展开运算符作为函数参数
+      function add(a, b, c) {
+        return a + b + c;
+      }
+      let nums = [1, 2, 3];
+      let sum = add(...nums); // 等价于 add(1, 2, 3)
+      console.log(sum); // 6
+
+      // 展开运算符将字符串转为数组
+      let str = "hello";
+      let arr = [...str];
+      console.log(arr); // ["h", "e", "l", "l", "o"]
+
+      // 展开运算符配合set方法去重
+      let fruits = ["Mango", "Apple", "Mango", "Banana", "Mango"];
+      let uniqueFruits = [...new Set(fruits)];
+      console.log(uniqueFruits); // ["Mango","Apple","Banana"]
+
+      // 剩余运算符定义可变参数的函数
+      function sum(...nums) {
+        // nums是一个数组，包含所有传入的参数
+        let total = 0;
+        for (let num of nums) {
+          total += num;
+        }
+        return total;
+      }
+      let result = sum(1, 2, 3, 4); // 等价于 sum([1, 2, 3, 4])
+      console.log(result); // 10
+
+      // 剩余运算符获取数组的一部分
+      let [first, second, ...rest] = [1, 2, 3, 4, 5];
+      console.log(first); // 1
+      console.log(second); // 2
+      console.log(rest); // [3, 4, 5]
+
+      // 剩余运算符获取对象的一部分（ES2018新增特性）
+      let { a, b, ...others } = { a: 1, b: 2, c: 3, d: 4 };
+      console.log(a); // 1
+      console.log(b); // 2
+      console.log(others); // {c: 3, d: 4}
+
+      // 剩余运算符合并多个对象
+      let obj1 = { a: 1 };
+      let obj2 = { b: 2 };
+      let obj3 = { c: 3 };
+      let obj4 = { ...obj1, ...obj2, ...obj3 };
+      console.log(obj4); // {a: 1, b: 2, c: 3}
+
+      // 剩余运算符配合解构赋值
+      let [x, y, ...z] = [1, 2, 3, 4];
+      console.log(x); // 1
+      console.log(y); // 2
+      console.log(z); // [3, 4]
+    </script>
+  </body>
+</html>

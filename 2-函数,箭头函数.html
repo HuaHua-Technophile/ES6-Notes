@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-bs-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="icon"
+      href="https://i.328888.xyz/2023/04/14/ixDL13.jpeg"
+      type="image/png" />
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <link
+      href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.3.0-alpha3/css/bootstrap.css"
+      rel="stylesheet" />
+    <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.3.0-alpha3/js/bootstrap.bundle.js"></script>
+    <title>花花</title>
+  </head>
+  <body>
+    <ol>
+      <li>箭头函数的语法更简洁，可以用更少的代码写出函数²。</li>
+      <li>
+        箭头函数不绑定自己的this，而是使用词法作用域(父作用域)的this，不是调用时的this.任何方法都改变不了，包括call，apply，bind。
+      </li>
+      <li>
+        箭头函数可以在没有函数体的情况下隐式返回表达式的值¹⁴。这样可以使代码更简洁和清晰。
+      </li>
+      <li>
+        箭头函数没有自己的arguments对象，也不能用作构造函数或生成器函数⁴。这些限制可以防止一些不良的编程习惯或错误。
+      </li>
+    </ol>
+    <ol>
+      <li>
+        箭头函数不绑定自己的this，arguments，super或new.target²⁴。这意味着在一些需要使用这些值的场景中，箭头函数不能正常工作。
+      </li>
+      <li>
+        箭头函数不能用作方法¹²。因为箭头函数没有自己的this，所以不能访问方法所属的对象的属性或方法。
+      </li>
+      <li>
+        箭头函数不能用作构造函数¹²。如果用new调用箭头函数，会抛出TypeError。箭头函数也不能访问new.target关键字。
+      </li>
+      <li>
+        箭头函数不能在函数体内使用yield¹²。这意味着箭头函数不能创建生成器函数。
+      </li>
+    </ol>
+    <script>
+      //() => expression// 无参数时，需要用括号表示空参数列表
+
+      //param => expression// 单个参数时，可以省略括号
+
+      //(param1, param2) => expression// 多个参数时，需要用括号包裹
+
+      /* (param1, param2) => {
+              statements;
+              return expression;
+            } */
+      // 函数体有多条语句时，需要用花括号包裹，并且需要显式return
+
+      /* (a = 1, b = 2, ...rest) => expression
+            ([a, b] = [1, 2]) => expression
+            ({a, b} = {a: 1, b: 2}) => expression */
+      // 参数可以使用默认值，剩余参数，解构等特性，但是必须用括号包裹
+
+      /* async (param) => expression;
+            async (param1, param2) => {
+              statements;
+            }; */
+      // 箭头函数可以使用async关键字表示异步函数
+
+      // 使用箭头函数作为回调函数,更加简洁
+      let numbers = [1, 2, 3, 4, 5];
+      let squares = numbers.map((item) => item * item); // [1, 4, 9, 16, 25]
+
+      // 箭头函数柯里化
+      let add = (x) => (y) => x + y; // 返回一个接受一个参数并返回x+y的函数
+      let add10 = add(10); // 返回一个接受一个参数并返回10+y的函数
+      let result = add10(5); // 返回15
+
+      // 使用箭头函数作为立即执行函数表达式（IIFE）,更加简洁
+      let message = ((name) => `Hello ${name}`)("Sam"); // 'Hello Sam'
+
+      // 使用箭头函数作为对象字面量中的属性值
+      let obj = {
+        name: "Tom",
+        sayHello: () => `Hello ${this.name}`, // 注意：这里的this不是指向obj，而是指向外层作用域的this,在此处就是Windows
+      };
+      console.log(obj.sayHello()); // 'Hello undefined'
+
+      // 使用箭头函数作为类中的静态方法
+      class Person {
+        constructor(name) {
+          this.name = name;
+        }
+        static createGreeting = (person) => `Hello ${person.name}`; // 静态方法不需要实例化就可以调用
+      }
+      let alice = new Person("Alice");
+      console.log(Person.createGreeting(alice)); // 'Hello Alice'
+
+      //箭头函数通过call和apply调用，不会改变this指向，只会传入参数
+      let obj2 = {
+        a: 10,
+        fn1: function (n) {
+          let fn1_ = (n) => n + this.a;
+          return fn1_(n);
+        },
+        fn2: function (n) {
+          let fn2_ = (n) => n + this.a;
+          let m = {
+            a: 20,
+          };
+          return fn2_.call(m, n);
+        },
+      };
+      console.log(obj2.fn1(1)); // 11
+      console.log(obj2.fn2(1)); // 11
+
+      // 关于this的面试题
+      /* var name = 'leo';
+      var teacher = {
+        name: '花花',
+        showName: function () {
+          function showTest() {
+            alert(this.name);
+          }
+          showTest();
+        },
+      };
+      teacher.showName(); //结果是 leo，而我们期待的是花花，这里this指向了window，我们期待指向teacher */
+      var name = "leo";
+      var teacher = {
+        name: "花花",
+        showName: function () {
+          let showTest = () => console.log(this.name);
+          showTest();
+        },
+      };
+      teacher.showName(); //花花
+
+      //箭头函数没有原型
+      var foo = () => {};
+      console.log(foo.prototype); //undefined
+    </script>
+  </body>
+</html>

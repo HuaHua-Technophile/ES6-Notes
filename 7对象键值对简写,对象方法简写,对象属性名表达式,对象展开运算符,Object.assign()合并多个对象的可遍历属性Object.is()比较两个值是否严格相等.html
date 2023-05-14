@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-bs-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="icon"
+      href="https://i.328888.xyz/2023/04/14/ixDL13.jpeg"
+      type="image/png" />
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <link
+      href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.3.0-alpha3/css/bootstrap.css"
+      rel="stylesheet" />
+    <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.3.0-alpha3/js/bootstrap.bundle.js"></script>
+    <title>
+      7对象键值对简写,对象方法简写,对象属性名表达式,对象展开运算符,Object.assign()合并多个对象的可遍历属性Object.is()比较两个值是否严格相等
+    </title>
+  </head>
+  <body>
+    <h1>ES6 对象新特性</h1>
+    <ol>
+      <li>
+        <pre>
+属性简写：如果属性名和表示属性值的变量名相同，可以省略属性值，
+let obj = {name:'name', age:'age'} => let obj = {name, age}</pre
+        >
+      </li>
+      <li>
+        <pre>
+计算属性名：可以使用表达式作为属性名(需放在方括号内)
+let obj = {'HuaHua_Age':18} => let obj = {[name + '_Age']:18}</pre
+        >
+      </li>
+      <li>
+        <pre>
+方法简写：可以省略方法的冒号和function关键字
+let obj = {
+  sayHello : function(){
+    console.log('hello')
+  }
+}  =>
+let obj = {
+  sayHello() {
+    console.log('hello')
+  }
+}</pre
+        >
+      </li>
+      <li>
+        <pre>
+对象扩展运算符：可以使用`...`运算符将一个对象的所有可枚举属性复制到另一个对象中
+let obj1 = {a: 1, b: 2}; let obj2 = {...obj1, c: 3}`</pre
+        >
+      </li>
+      <li>
+        <pre>
+Object.assign()方法：可以用来合并多个对象的可遍历属性，例如
+let obj1 = {a: 1,b: 2};
+let obj2 = {c: 3, d: 4};
+let obj3 = Object.assign(obj1, obj2)</pre
+        >
+      </li>
+      <li>
+        <pre>
+Object.is()方法：可以用来判断两个值是否严格相等(与（===）基本类似。)
+Object.is("q","q");      // true
+Object.is(1,1);          // true
+Object.is([1],[1]);      // false
+Object.is({q:1},{q:1});  // false
+
+与（===）的区别
+
+//+0不等于-0
+Object.is(+0,-0);  //false
++0 === -0  //true
+//NaN等于本身
+Object.is(NaN,NaN); //true
+NaN === NaN  //false
+</pre
+        >
+      </li>
+      <li>
+        <pre>
+Object.keys()、Object.values()、Object.entries()方法：可以用来获取对象的键、值、键值对数组
+let obj = {a: 1, b: 2}
+Object.keys(obj) // ['a', 'b']</pre
+        >
+      </li>
+    </ol>
+  </body>
+</html>

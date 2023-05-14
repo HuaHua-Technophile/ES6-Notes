@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-bs-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="icon"
+      href="https://i.328888.xyz/2023/04/14/ixDL13.jpeg"
+      type="image/png" />
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <link
+      href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.3.0-alpha3/css/bootstrap.css"
+      rel="stylesheet" />
+    <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.3.0-alpha3/js/bootstrap.bundle.js"></script>
+    <title>花花</title>
+  </head>
+  <body>
+    <p>
+      Promise对象是JavaScript的一种异步操作解决方案，它为异步操作提供了统一的接口
+    </p>
+    <p>
+      Promise对象可以表示一个还未知的值，它有三种状态：pending（等待中）、fulfilled（已成功）和rejected（已失败）Promise对象可以使用then、catch和finally方法来添加回调函数，处理异步操作的结果
+      <br />promise本身只是一个容器,真正异步的是它的两个回调resolve()和reject()
+      <br />promise本质不是控制异步代码的执行顺序（无法控制），而是控制异步代码结果处理的顺序
+    </p>
+    <p>
+      Promise对象的then、catch和finally方法都会默认返回一个Promise对象，因此还可以进行链式调用，将多个异步操作串联起来
+    </p>
+    <ol>
+      Promise对象的优点有
+      <li>
+        可以解决回调地狱的问题，让异步操作以同步的流程表达出来，避免了层层嵌套的回调函数。
+      </li>
+      <li>
+        可以提供统一的错误处理机制，通过catch方法捕获异步操作中的错误，不会导致程序崩溃。
+      </li>
+      <li>
+        可以利用then、catch和finally方法进行链式调用，将多个异步操作串联起来，提高代码的可读性和维护性。
+      </li>
+    </ol>
+    <ol>
+      Promise对象的缺点有
+      <li>无法取消 Promise，一旦新建它就会立即执行，无法中途取消。</li>
+      <li>如果不设置回调函数，Promise 内部抛出的错误，不会反应到外部。</li>
+      <li>
+        当处于pending状态时，无法得知目前进展到哪一个阶段(刚刚开始还是即将完成)
+      </li>
+    </ol>
+  </body>
+</html>

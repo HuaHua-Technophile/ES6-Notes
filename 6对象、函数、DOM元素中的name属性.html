@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-bs-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="icon"
+      href="https://i.328888.xyz/2023/04/14/ixDL13.jpeg"
+      type="image/png" />
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <link
+      href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.3.0-alpha3/css/bootstrap.css"
+      rel="stylesheet" />
+    <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.3.0-alpha3/js/bootstrap.bundle.js"></script>
+    <title>6对象、函数、DOM元素中的name属性</title>
+  </head>
+  <body>
+    <ol>
+      <li>
+        函数的name属性返回函数的名称，通常是从函数的定义方式推断出来的，但也可以在函数表达式中显式指定
+      </li>
+      <li>对象的name属性返回对象的构造函数的名称，通常用于检查对象的“类”</li>
+      <li>
+        元素的name属性返回或设置元素的名称，通常用于表单元素或者window对象
+      </li>
+    </ol>
+    <form name="myForm">
+      <input type="text" name="myInput" />
+    </form>
+    <script>
+      // 函数的name属性
+      function foo() {} // 命名函数
+      let bar = function () {}; // 匿名函数
+      let baz = function qux() {}; // 命名函数表达式
+      console.log(foo.name); // "foo"
+      console.log(bar.name); // "bar"（推断自变量名）
+      console.log(baz.name); // "qux"（显式指定）
+
+      // 对象的name属性
+      function Foo() {} // 构造函数
+      let foo = new Foo(); // 实例对象
+      console.log(Foo.name); // "Foo"
+      console.log(foo.name); // undefined（实例对象没有name属性）
+      console.log(foo.constructor.name); // "Foo"（实例对象的构造函数的name属性）
+
+      // 元素的name属性
+      let form = document.forms["myForm"]; // 通过name属性获取表单元素
+      let input = form.elements["myInput"]; // 通过name属性获取表单内的输入元素
+      console.log(form.name); // "myForm"
+      console.log(input.name); // "myInput"
+    </script>
+  </body>
+</html>

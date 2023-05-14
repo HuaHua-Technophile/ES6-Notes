@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-bs-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="icon"
+      href="https://i.328888.xyz/2023/04/14/ixDL13.jpeg"
+      type="image/png" />
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <link
+      href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.3.0-alpha3/css/bootstrap.css"
+      rel="stylesheet" />
+    <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.3.0-alpha3/js/bootstrap.bundle.js"></script>
+    <title>8-4回调地狱案例</title>
+  </head>
+  <body>
+    <script>
+      // 回调函数的相关嵌套,就是回调地狱  回调函数里面嵌套回调函数, 再嵌套回调函数
+
+      // Promise的出现主要是解决回调地狱的问题，比如你需要结果需要请求很多个接口，这些接口的参数需要另外那个的接口返回的数据作为依赖，这样就需要我们一层嵌套一层，但是有了Promise 我们就无需嵌套
+
+      // 1. 歌曲搜索接口
+      // 请求地址:https://apis.netstart.cn/music/search
+      // 请求方法:get
+      // 请求参数:keywords(查询关键字)
+      // 响应内容:歌曲搜索结果
+      // 示范例子:https://apis.netstart.cn/music/search?keywords=许嵩
+
+      // 2. 歌曲详情获取
+      // 请求地址:https://apis.netstart.cn/music/song/detail
+      // 请求方法:get
+      // 请求参数:ids(歌曲id)
+      // 响应内容:歌曲详情(包括封面信息)
+      // 示范例子:https://apis.netstart.cn/music/song/detail?ids=411214279
+
+      // 3. 热门评论获取
+      // 请求地址:https://apis.netstart.cn/music/comment/hot?type=0
+      // 请求方法:get
+      // 请求参数:id(歌曲id,地址中的type固定为0)
+      // 响应内容:歌曲的热门评论
+      // 示范例子:https://apis.netstart.cn/music/comment/hot?type=0&id=411214279
+
+      // 4.mv地址获取
+      // 请求地址:https://apis.netstart.cn/music/mv/url
+      // 请求方法:get
+      // 请求参数:id(备注id的值为mvid,如果mvid为0表示没有mv,  需要从歌曲搜索接口中获取每个歌曲详细的mvid)
+      // 响应内容:mv的地址
+      // 示范例子:https://apis.netstart.cn/music/mv/url?id=5302271
+
+      // 5.歌词获取
+      // 请求地址:https://apis.netstart.cn/music/lyric
+      // 请求方法:get
+      // 请求参数:id
+      // 响应内容:歌词
+      // 示范例子:https://apis.netstart.cn/music/lyric?id=411214279
+
+      /* let xhr1 = new XMLHttpRequest();
+        xhr1.open("GET", "https://apis.netstart.cn/music/search?keywords=许嵩");
+        xhr1.send();
+        xhr1.onreadystatechange = function () {
+            if (xhr1.readyState === 4 && xhr1.status === 200) {
+                console.log("1. 歌曲搜索接口");
+                console.log(JSON.parse(xhr1.responseText));
+                console.log("");
+            }
+        }
+
+        let xhr2 = new XMLHttpRequest();
+        xhr2.open("GET", "https://apis.netstart.cn/music/song/detail?ids=411214279");
+        xhr2.send();
+        xhr2.onreadystatechange = function () {
+            if (xhr2.readyState === 4 && xhr2.status === 200) {
+                console.log("2. 歌曲详情获取");
+                console.log(JSON.parse(xhr2.responseText));
+                console.log("");
+            }
+        }
+
+        let xhr3 = new XMLHttpRequest();
+        xhr3.open("GET", "https://apis.netstart.cn/music/comment/hot?type=0&id=411214279");
+        xhr3.send();
+        xhr3.onreadystatechange = function () {
+            if (xhr3.readyState === 4 && xhr3.status === 200) {
+                console.log("3. 热门评论获取");
+                console.log(JSON.parse(xhr3.responseText));
+                console.log("");
+            }
+        }
+
+        let xhr4 = new XMLHttpRequest();
+        xhr4.open("GET", "https://apis.netstart.cn/music/mv/url?id=5302271");
+        xhr4.send();
+        xhr4.onreadystatechange = function () {
+            if (xhr4.readyState === 4 && xhr4.status === 200) {
+                console.log("4.mv地址获取");
+                console.log(JSON.parse(xhr4.responseText));
+                console.log("");
+            }
+        }
+
+
+        let xhr5 = new XMLHttpRequest();
+        xhr5.open("GET", "https://apis.netstart.cn/music/lyric?id=411214279");
+        xhr5.send();
+        xhr5.onreadystatechange = function () {
+            if (xhr5.readyState === 4 && xhr5.status === 200) {
+                console.log("5.歌词获取");
+                console.log(JSON.parse(xhr5.responseText));
+                console.log("");
+            }
+        } */
+
+      let xhr1 = new XMLHttpRequest();
+      xhr1.open("GET", "https://apis.netstart.cn/music/search?keywords=许嵩");
+      xhr1.send();
+      xhr1.onreadystatechange = function () {
+        if (xhr1.readyState === 4 && xhr1.status === 200) {
+          console.log("1. 歌曲搜索接口");
+          console.log(JSON.parse(xhr1.responseText));
+          console.log("");
+
+          let xhr2 = new XMLHttpRequest();
+          xhr2.open(
+            "GET",
+            "https://apis.netstart.cn/music/song/detail?ids=411214279"
+          );
+          xhr2.send();
+          xhr2.onreadystatechange = function () {
+            if (xhr2.readyState === 4 && xhr2.status === 200) {
+              console.log("2. 歌曲详情获取");
+              console.log(JSON.parse(xhr2.responseText));
+              console.log("");
+
+              let xhr3 = new XMLHttpRequest();
+              xhr3.open(
+                "GET",
+                "https://apis.netstart.cn/music/comment/hot?type=0&id=411214279"
+              );
+              xhr3.send();
+              xhr3.onreadystatechange = function () {
+                if (xhr3.readyState === 4 && xhr3.status === 200) {
+                  console.log("3. 热门评论获取");
+                  console.log(JSON.parse(xhr3.responseText));
+                  console.log("");
+
+                  let xhr4 = new XMLHttpRequest();
+                  xhr4.open(
+                    "GET",
+                    "https://apis.netstart.cn/music/mv/url?id=5302271"
+                  );
+                  xhr4.send();
+                  xhr4.onreadystatechange = function () {
+                    if (xhr4.readyState === 4 && xhr4.status === 200) {
+                      console.log("4.mv地址获取");
+                      console.log(JSON.parse(xhr4.responseText));
+                      console.log("");
+
+                      let xhr5 = new XMLHttpRequest();
+                      xhr5.open(
+                        "GET",
+                        "https://apis.netstart.cn/music/lyric?id=411214279"
+                      );
+                      xhr5.send();
+                      xhr5.onreadystatechange = function () {
+                        if (xhr5.readyState === 4 && xhr5.status === 200) {
+                          console.log("5.歌词获取");
+                          console.log(JSON.parse(xhr5.responseText));
+                          console.log("");
+                        }
+                      };
+                    }
+                  };
+                }
+              };
+            }
+          };
+        }
+      };
+    </script>
+  </body>
+</html>

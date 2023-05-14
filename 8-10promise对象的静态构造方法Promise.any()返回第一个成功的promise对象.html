@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-bs-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="icon"
+      href="https://i.328888.xyz/2023/04/14/ixDL13.jpeg"
+      type="image/png" />
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <link
+      href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.3.0-alpha3/css/bootstrap.css"
+      rel="stylesheet" />
+    <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.3.0-alpha3/js/bootstrap.bundle.js"></script>
+    <title>花花</title>
+  </head>
+  <body>
+    <p>
+      Promise.any()方法是ES2021中引入的一个JavaScript的新特性。它可以接收一个由Promise所组成的可迭代对象，然后返回一个新的Promise
+      <br />这个新的Promise会在可迭代对象内的任意一个Promise变成了成功状态时，也变成成功状态，并且它的成功值就是可迭代对象内的首先成功的Promise的成功值
+      <br />如果可迭代对象内的所有Promise都被拒绝了，那么这个新的Promise就会变成拒绝状态，并且它的拒因会是一个AggregateError实例，这是Error的子类，用于把单一的错误集合在一起
+      <br />这个方法可以用于获取首个成功的Promise的值，而不关心其他的Promise是成功了还是被拒了
+    </p>
+    <ol>
+      Promise.any()方法有一些应用场景，比如：
+      <li>
+        从最快的服务器检索资源。如果你有多台服务器，可以使用Promise.any()方法从最快的服务器接收响应，而不用等待其他服务器的响应
+      </li>
+      <li>
+        显示第一张已加载的图片。如果你有一个获取图片并返回blob的函数，可以使用Promise.any()方法来获取一些图片并显示第一张有效的图片（即最先resolved的那个promise）
+      </li>
+    </ol>
+    <script>
+      let p1 = new Promise((resolve, reject) => {
+        let num = Math.random();
+        setTimeout(() => {
+          num > 0.7 ? resolve(`1请求成功了`) : reject(`1请求失败了`);
+        }, 100);
+      });
+      let p2 = new Promise((resolve, reject) => {
+        let num = Math.random();
+        setTimeout(() => {
+          num > 0.7 ? resolve(`2请求成功了`) : reject(`2请求失败了`);
+        }, 200);
+      });
+      let p3 = new Promise((resolve, reject) => {
+        let num = Math.random();
+        setTimeout(() => {
+          num > 0.7 ? resolve(`3请求成功了`) : reject(`3请求失败了`);
+        }, 300);
+      });
+      console.log(p1, p2, p3);
+      Promise.any([p1, p2, p3])
+        .then((res) => {
+          console.log("res=>", res);
+        })
+        .catch((reason) => {
+          console.log("reason=>", reason);
+        });
+    </script>
+  </body>
+</html>

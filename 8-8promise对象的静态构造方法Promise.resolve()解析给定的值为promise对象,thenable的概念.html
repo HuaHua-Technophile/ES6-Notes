@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-bs-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="icon"
+      href="https://i.328888.xyz/2023/04/14/ixDL13.jpeg"
+      type="image/png" />
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <link
+      href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.3.0-alpha3/css/bootstrap.css"
+      rel="stylesheet" />
+    <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.3.0-alpha3/js/bootstrap.bundle.js"></script>
+    <title>
+      8-8promise对象的静态构造方法Promise.resolve()解析给定的值为promise对象,thenable的概念
+    </title>
+  </head>
+  <body>
+    <p>
+      Promise.resolve()方法是一个JavaScript的内置函数，它可以将一个给定的值“解析”为一个Promise对象。如果这个值是一个promise，那么就直接返回这个promise；如果这个值是一个thenable（即有then方法的对象），那么返回的promise会“跟随”这个thenable的对象，采用它的最终状态；否则返回的promise将以这个值完成。这个函数可以将类promise对象的多层嵌套展平
+    </p>
+    <ol>
+      <li>创建一个已经解决的promise</li>
+      <script>
+        let p1 = Promise.resolve("我是字符串1,将被解析为Promise对象");
+        console.log("p1=>", p1);
+        p1.then((res) => {
+          console.log(res);
+        });
+      </script>
+      <li>
+        <ol>
+          在JavaScript中，一个thenable是一个拥有或实现了then()方法的对象，它可以接受两个回调函数，一个用于当Promise被解决时，另一个用于当Promise被拒绝时。所有的Promise都是thenable对象，但并不是所有的thenable对象都是Promise。许多Promise的模式，比如链式调用和async/await，都可以使用任何thenable对象
+          <script>
+            // 一个thenable是一个拥有then()方法的对象。下面的thenable表现得像一个在10ms后以42为值解决的Promise。
+            const thenable4 = {
+              then: function (onFulfilled, reject) {
+                setTimeout(() => onFulfilled('10ms后成功'), 10);
+              },
+            };
+            // 你可以在Promise链中使用thenable
+            Promise.resolve()
+              .then(() => thenable4)
+              .then((value) => {
+                console.log(value); // '10ms后成功'
+              });
+            // 你也可以使用await来等待thenable
+            const res = await thenable4;
+            console.log(res); // '10ms后成功'
+          </script>
+        </ol>
+        将一个thenable对象转换为一个promise
+      </li>
+      <script>
+        const thenable = {
+          then: function (resolve, reject) {
+            resolve("我是字符串2,将被解析为Promise对象");
+          },
+        };
+        const p2 = Promise.resolve(thenable);
+        p2.then((value) => {
+          console.log(value); // '我是字符串2,将被解析为Promise对象'
+        });
+      </script>
+      <li>将多层嵌套的promise展平为一层</li>
+      <script>
+        const p3 = Promise.resolve("abc");
+        const p4 = Promise.resolve(p3);
+        console.log(p3 === p4); // true
+      </script>
+    </ol>
+    <ol>
+      Promise.resolve()方法的缺点可能有以下几种：
+      <li>
+        Promise.resolve()方法可能会导致无限递归，如果它试图解析一个解析为自身的thenable。这将消耗内存和CPU资源，导致程序崩溃。例如：
+      </li>
+      <script>
+        let thenable2 = {
+          then: (resolve, reject) => {
+            resolve(thenable2);
+          },
+        };
+        //Promise.resolve(thenable2);  无限递归
+      </script>
+      <li>
+        Promise.resolve()方法可能会掩盖一些错误，如果它解析一个thenable，而这个thenable在回调之后抛出异常。这将导致异常被忽略，而不是被捕获或处理
+      </li>
+      <script>
+        let thenable3 = {
+          then: (resolve, reject) => {
+            resolve("Resolving");
+            throw new TypeError("Throwing");
+          },
+        };
+        Promise.resolve(thenable3).then(
+          (value) => {
+            console.log(value); // 输出"Resolving"
+          },
+          (error) => {
+            // 不会被调用
+          }
+        );
+      </script>
+      <li>
+        Promise.resolve()方法可能会增加一些不必要的开销，如果它解析一个原生的Promise对象。这将导致创建一个新的Promise对象，而不是直接返回原来的Promise对象
+      </li>
+      <script>
+        let promise = new Promise((resolve, reject) => {
+          // some async task
+        });
+        let resolved = Promise.resolve(promise);
+        console.log(promise === resolved); // false
+      </script>
+    </ol>
+  </body>
+</html>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-bs-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="icon"
+      href="https://i.328888.xyz/2023/04/14/ixDL13.jpeg"
+      type="image/png" />
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <link
+      href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.3.0-alpha3/css/bootstrap.css"
+      rel="stylesheet" />
+    <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.3.0-alpha3/js/bootstrap.bundle.js"></script>
+    <title>13Class类的概念,constructor()构造函数,共有属性,实例属性</title>
+  </head>
+  <body>
+    <p>
+      JavaScript中的class是用于创建对象的模板，它可以定义构造函数、属性和方法。class是基于原型的语法糖
+      <br /><strong>***它实际上是一个特殊的函数***</strong
+      >,可以使用new关键字来创建实例。class还支持继承、静态方法、私有字段等特性
+    </p>
+    <p>
+      类声明/定义：类表达式可以为匿名或命名类定义不会被提升，这意味着，必须在访问前对类进行定义，否则就会报错。(构造函数的首字母一般大写)
+    </p>
+    <script>
+      let Anonymous_class = class {}; // 匿名类
+      let Named_class = class Example2 {}; // 命名类
+      class App {
+        sayHello() {
+          return "hello";
+        }
+        sayHi() {
+          return "hi";
+        }
+        Sleep() {
+          return "Zzzz";
+        }
+      } // 类声明
+    </script>
+    <p>
+      类中方法不需要function关键字。构造函数的prototype属性在class依然存在.
+      <br />虽然可以直接自定义类中的方法，但是其实方法是定义在类的prototype上的
+    </p>
+    <script>
+      console.log(Anonymous_class.prototype); //{constructor: ƒ}
+      console.log(Named_class.prototype); //{constructor: ƒ}
+      console.log(App.prototype); //{constructor: ƒ, sayHello: ƒ, sayHi: ƒ, Sleep: ƒ}
+      App.prototype = {
+        Run() {
+          return "Im Running";
+        },
+      }; // 尝试:覆盖原型/初始化时添加方法
+      Object.assign(App.prototype, {
+        NiHao() {
+          return "Fuck You";
+        }, //assign合并对象,合并进去的方法,是可以遍历(枚举)的
+      });
+      console.log(App.prototype); //{NiHao: ƒ, constructor: ƒ, sayHello: ƒ, sayHi: ƒ, Sleep: ƒ}
+    </script>
+    <p>
+      JavaScript中class的constructor()方法是一种特殊的方法，用于创建和初始化在类中创建的对象
+      <br />当new初始化类时，constructor()方法会被自动调用，并且它必须使用确切的名称"constructor".若不写明constructor构造方法，JavaScript将添加一个不可见的空构造方法
+      <br />该方法会隐式默认的返回当前实例对象(也就是this),也可以显式返回另一个对象作为当前class实例化后的对象
+    </p>
+    <p>
+      一个类只能有一个名为"constructor"的特殊方法。如果类包含多个constructor()方法，则将抛出一个SyntaxError错误
+      <br />在一个构造方法中可以使用super关键字来调用一个父类的构造方法
+    </p>
+    <p>
+      JavaScript中class的公共属性是指定义在类或类实例上的属性,或定义在原型上的属性;实例属性是指在constructor()构造函数中创建的this的属性.这两种属性都可以被类的实例或子类继承和访问
+    </p>
+    <ol>
+      <li>在类的内部直接使用 = 来赋予默认值</li>
+      <li>也可以直接写在类的原型prototype上,也可以让所有实例对象访问</li>
+      <li>
+        也可以在constructor构造函数中使用this来初始化。公有实例字段可以在类的方法中使用this来访问或修改
+      </li>
+    </ol>
+    <script>
+      class Rectangle {
+        // 定义一个构造方法
+        name1 = "多边形"; //类内部直接等号赋值创建公共属性
+        constructor(height, width) {
+          this.height = height;
+          this.width = width;
+        }
+      }
+      Rectangle.prototype.name2 = "矩形"; //类的原型直接等号赋值创建公共属性
+      // 定义一个正方形类，继承自多边形类
+      class Square extends Rectangle {
+        // 定义一个构造方法
+        constructor(length) {
+          // 调用父类的构造方法，并传递长度作为高度和宽度
+          super(length, length);
+          this.name3 = "正方形"; //构造器内this赋值创建实例属性
+        }
+      }
+      let square = new Square(10); // 创建一个正方形的实例
+      // 访问实例的属性
+      console.log(square.name1); //多边形
+      console.log(square.name2); // 矩形
+      console.log(square.name3); // 正方形
+      console.log(square.height); // 10
+      console.log(square.width); // 10
+    </script>
+  </body>
+</html>

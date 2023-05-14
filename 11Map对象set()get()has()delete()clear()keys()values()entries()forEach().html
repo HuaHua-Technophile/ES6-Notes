@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-bs-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="icon"
+      href="https://i.328888.xyz/2023/04/14/ixDL13.jpeg"
+      type="image/png" />
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <link
+      href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.3.0-alpha3/css/bootstrap.css"
+      rel="stylesheet" />
+    <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.3.0-alpha3/js/bootstrap.bundle.js"></script>
+    <title>
+      11Map对象set()get()has()delete()clear()keys()values()entries()forEach()
+    </title>
+  </head>
+  <body>
+    <p>
+      Map对象是JavaScript中的一个全局对象，它可以保存键值对，并且记住键的插入顺序。任何值（包括函数，对象或任何原始值）都可以作为键或值
+    </p>
+    <ol>
+      Map对象有一些与Object对象不同的特点，例如：
+      <li>Map对象的键可以是任意值，而Object对象的键必须是字符串或符号。</li>
+      <li>
+        Map对象可以使用size属性轻松地获取大小，而Object对象的属性数量必须手动确认。
+      </li>
+      <li>
+        Map对象是可迭代的，因此可以直接迭代，而在Object对象上迭代则需要以某种方式获取其键并对其进行迭代。
+      </li>
+      <li>
+        Map对象没有原型，所以它不包含任何默认的键，而Object对象有一个原型，所以它包含一些可能与你的键冲突的默认键。
+      </li>
+      <li>在涉及频繁添加和删除键值对的场景中，Map对象可能表现得更好。</li>
+    </ol>
+    <ol>
+      <li>
+        set(key,value):设置Map对象中指定键的值。如果键已经存在，就更新它的值。如果键不存在，就添加一个新的键值对。返回Map对象本身，所以可以链式调用。
+      </li>
+      <li>
+        get(key): 返回Map对象中指定键的值。如果键不存在，就返回undefined。
+      </li>
+      <li>has(key): 返回一个布尔值，表示Map对象中是否有指定键的值。</li>
+      <li>
+        delete(key):删除Map对象中指定键的值。如果删除成功，就返回true。如果键不存在，就返回false。
+      </li>
+      <li>clear(): 删除Map对象中所有的键值对。</li>
+      <li>
+        keys():返回一个新的迭代器对象，包含Map对象中所有的键，按照插入顺序排列。
+      </li>
+      <li>
+        values():返回一个新的迭代器对象，包含Map对象中所有的值，按照插入顺序排列。
+      </li>
+      <li>
+        entries():返回一个新的迭代器对象，包含Map对象中所有的键值对，按照插入顺序排列。
+      </li>
+      <li>
+        forEach(callbackFn[,thisArg]):为Map对象中的每个键值对调用一次callbackFn函数，按照插入顺序执行。如果提供了thisArg参数，就将它作为callbackFn函数的this值。
+      </li>
+    </ol>
+    <script>
+      // 创建一个空的Map对象
+      let myMap = new Map();
+      // 使用set()方法添加一些键值对
+      myMap.set("name", "Alice");
+      myMap.set("age", 25);
+      myMap.set("gender", "female");
+      myMap.set("hobby", ["reading", "writing", "singing"]);
+      console.log(myMap);
+      // 使用get()方法获取指定键的值
+      console.log(myMap.get("name")); // Alice
+      console.log(myMap.get("age")); // 25
+      console.log(myMap.get("gender")); // female
+      console.log(myMap.get("hobby")); // ["reading", "writing", "singing"]
+      console.log(myMap.get("occupation")); // undefined
+      // 使用has()方法检查是否有指定键的值
+      console.log(myMap.has("name")); // true
+      console.log(myMap.has("age")); // true
+      console.log(myMap.has("gender")); // true
+      console.log(myMap.has("hobby")); // true
+      console.log(myMap.has("occupation")); // false
+      // 使用delete()方法删除指定键的值
+      console.log(myMap.delete("gender")); // true
+      console.log(myMap.delete("occupation")); // false
+      // 使用clear()方法删除所有的键值对
+      /* myMap.clear();
+      console.log(myMap.size); // 0 */
+      // 使用keys()方法获取所有的键
+      let keys = myMap.keys();
+      for (let key of keys) {
+        console.log(key); //=>name  =>age  =>hobby
+      }
+      // 使用values()方法获取所有的值
+      let values = myMap.values();
+      for (let value of values) {
+        console.log(value); //=>Alice   =>25   =>["reading", "writing", "singing"]
+      }
+      // 使用entries()方法获取所有的键值对
+      let entries = myMap.entries();
+      for (let entry of entries) {
+        console.log(entry); //=>["name", "Alice"]   =>["name", "Alice"]   =>["hobby", ["reading", "writing", "singing"]]
+      }
+      // 使用forEach()方法对每个键值对执行一个函数
+      myMap.forEach((value, key) => {
+        console.log(key + ": " + value); //=>name: Alice   =>age: 25   =>hobby: reading,writing,singing
+      });
+    </script>
+  </body>
+</html>

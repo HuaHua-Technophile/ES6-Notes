@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-bs-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="icon"
+      href="https://i.328888.xyz/2023/04/14/ixDL13.jpeg"
+      type="image/png" />
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <link
+      href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.3.0-alpha3/css/bootstrap.css"
+      rel="stylesheet" />
+    <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.3.0-alpha3/js/bootstrap.bundle.js"></script>
+    <title>花花</title>
+  </head>
+  <body>
+    <p>
+      Fetch方法是JavaScript中用于发送HTTP请求和获取网络资源的一种接口，它返回一个Promise对象，可以用来处理响应和错误。
+      <br />Fetch方法可以设置不同的选项，如method,headers,mode,body等，来控制请求的细节。
+      <br />Fetch方法也可以使用status, ok, url, type, headers, json(), text(),
+      blob()等方法来处理响应的内容
+    </p>
+    <p>
+      FetchAPI提供了一个JavaScript接口，用于访问和操纵HTTP技术的一些具体部分，例如请求和响应。它还提供了一个全局fetch()方法，该方法提供了一种简单，合理的方式来跨网络异步获取资源。这种功能以前是使用XMLHttpRequest实现的。Fetch提供了一个更理想的替代方案，可以很容易地被其他技术使用，例如Service_Workers。
+    </p>
+    <p>
+      当然它只是一个HTTP响应，而不是真的JSON。为了获取JSON的内容，我们需要使用json()方法（该方法返回一个将响应body解析成JSON的promise）
+    </p>
+    <pre>
+fetch(url, options)
+  .then(response => {
+    // 处理响应
+  })
+  .catch(error => {
+    // 处理错误
+  })
+其中，url是要请求的资源的地址，options是一个可选的对象，用来设置请求的参数，如method, headers, mode, body
+fetch()返回一个Promise对象，表示一个异步的HTTP请求。如果请求成功，Promise会解析为一个Response对象，包含响应的状态码，标头，内容等信息。如果请求失败，Promise会被拒绝，并传递一个错误对象
+    </pre>
+    <button id="btn1">btn1</button>
+    <button id="btn2">btn2</button>
+    <button id="btn3">btn3</button>
+    <script>
+      btn1.onclick = () => {
+        console.log(fetch);
+        console.log(
+          fetch("https://apis.netstart.cn/music/search?keywords=陈奕迅")
+        );
+        fetch("https://apis.netstart.cn/music/search?keywords=陈奕迅")
+          .then((response) => {
+            console.log(response);
+            return response.json(); //该方法返回一个将响应body解析成JSON的promise
+          })
+          .then((data) => {
+            console.log("data=>", data);
+          });
+      };
+      btn2.onclick = async () => {
+        /* let response = await fetch(
+          'https://apis.netstart.cn/music/search?keywords=刘若英'
+        );
+        let data = await response.json();
+        console.log(data); */
+        let data = await (
+          await fetch("https://apis.netstart.cn/music/search?keywords=刘若英")
+        ).json();
+        console.log(data);
+      };
+      btn3.onclick = () => {
+        fetch("https://v2.alapi.cn/api/abbr", {
+          //网络缩略词转换为正常说话
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            token: "lJLxHK2NrnPVri457AaK",
+            abbr: "yyds",
+          }),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            console.log(data);
+          });
+      };
+    </script>
+  </body>
+</html>

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-bs-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="icon"
+      href="https://i.328888.xyz/2023/04/14/ixDL13.jpeg"
+      type="image/png" />
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <link
+      href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.3.0-alpha3/css/bootstrap.css"
+      rel="stylesheet" />
+    <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.3.0-alpha3/js/bootstrap.bundle.js"></script>
+    <title>9-2await等待promise函数执行完毕的关键字</title>
+  </head>
+  <body>
+    <p>
+      async函数中可能会有await表达式，async函数执行时，如果遇到await就会先暂停执行，等到触发的异步操作完成后，恢复async函数的执行并返回解析值。
+    </p>
+    <p>
+      await关键字仅在async_function中有效。如果在async_function函数体外使用await，你只会得到一个语法错误。
+    </p>
+    <script>
+      //await; // 报错
+      //await 10; // 报错, await is only valid in async functions and the top level bodies of modules
+
+      /* 
+      function fn() {// 报错 await它只能在"异步函数"或者模块顶层中使用。
+          await 10;
+      }
+      fn(); */
+
+      /* async function fn() {
+      await 10;
+    }
+    fn(); */
+
+      /* let fn = async function () {
+      await 10;
+    };
+    fn(); */
+
+      /* let fn = async () => {
+      await 10;
+    };
+    fn(); */
+
+      // await表达式
+      // 1. await关键字只能在异步函数中使用
+      // 2. await右侧的表达式内容, 可以是promise对象也可以是非promise对象数据
+
+      // await表达式细节:
+      // 1. await右侧为非promise对象数据,右侧是什么,await以后得到的就是什么
+      // 2. await右侧为promise对象的情况又分为两种:解决的和拒绝的
+      // 3. 如果 await 的 promise对象状态是解决的, await会对promise解决的"终值"做一个"获取"
+      // 4. 如果 await 的 promise对象状态是拒绝的, 就会抛出异常, 需要通过 try...catch 进行捕获处理错误信息
+
+      async function fn() {
+        let res1 = await 10;
+        console.log("res1=>", res1);
+
+        let res2 = await "abc";
+        console.log("res2=>", res2);
+
+        let res3 = await true;
+        console.log("res3=>", res3);
+
+        let res4 = await false;
+        console.log("res4=>", res4);
+
+        let res5 = await null;
+        console.log("res5=>", res5);
+
+        let res6 = await undefined;
+        console.log("res6=>", res6);
+
+        let res7 = await NaN;
+        console.log("res7=>", res7);
+
+        let res8 = await [10, 20, 30];
+        console.log("res8=>", res8);
+
+        let res9 = await { id: 3, uname: "lisi" };
+        console.log("res9=>", res9);
+
+        let res10 = await /\d{2}/;
+        console.log("res10=>", res10);
+
+        let res11 = await new RegExp("\\s{3}");
+        console.log("res11=>", res11);
+
+        let res12 = await Math.random();
+        console.log("res12=>", res12);
+
+        let res13 = await Math.random;
+        console.log("res13=>", res13);
+
+        let p = new Promise((resolve, reject) => {
+          let num = Math.random();
+          if (num > 0.5) {
+            resolve("1.请求成功");
+          } else {
+            reject("1.请求失败");
+          }
+        });
+        let res14 = await p; // await一个promise对象
+        console.log("res14=>", res14);
+        try {
+          let p = new Promise((resolve, reject) => {
+            let num = Math.random();
+            if (num > 0.5) {
+              resolve("2.成功了");
+            } else {
+              reject("2.失败了");
+            }
+          });
+          let res14 = await p; // await一个promise对象
+          console.log("res14=>", res14);
+        } catch (error) {
+          console.log("error=>", error);
+        }
+      }
+      fn();
+      // 小结:
+      // 1. await的使用,其实说白就是,主要是对promise对象,它成功结果做一个获取;如果promise对象状态是失败的话,就需要通过try...catch在catch里边拿到失败的据因信息
+      // 2. promise状态如果是成功,将走完所有try里面的代码;如果是失败则走catch里面的代码
+    </script>
+  </body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-bs-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="icon"
+      href="https://i.328888.xyz/2023/04/14/ixDL13.jpeg"
+      type="image/png" />
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <link
+      href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.3.0-alpha3/css/bootstrap.css"
+      rel="stylesheet" />
+    <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.3.0-alpha3/js/bootstrap.bundle.js"></script>
+    <title>8-5封装Promise对象函数,解决回调地狱</title>
+  </head>
+  <body>
+    <script>
+      $Ajax = (url) => {
+        return new Promise((resolve, reject) => {
+          let xhr = new XMLHttpRequest();
+          xhr.open("GET", url);
+          xhr.send();
+          xhr.onreadystatechange = () => {
+            xhr.readyState === 4 &&
+              (xhr.status === 200
+                ? resolve(JSON.parse(xhr.responseText)) // 转换为成功状态
+                : reject(`请求失败`)); // 转换为失败状态
+          };
+        });
+      };
+
+      $Ajax("https://apis.netstart.cn/music/search?keywords=许嵩")
+        .then((res1) => {
+          console.log("1. 歌曲搜索接口", res1);
+          return $Ajax(
+            "https://apis.netstart.cn/music/song/detail?ids=411214279"
+          );
+        })
+        .then((res2) => {
+          console.log("2. 歌曲详情获取", res2);
+          return $Ajax(
+            "https://apis.netstart.cn/music/comment/hot?type=0&id=411214279"
+          );
+        })
+        .then((res3) => {
+          console.log("3. 热门评论获取", res3);
+          return $Ajax("https://apis.netstart.cn/music/mv/url?id=5302271");
+        })
+        .then((res4) => {
+          console.log("4.mv地址获取", res4);
+          return $Ajax("https://apis.netstart.cn/music/lyric?id=411214279");
+        })
+        .then((res5) => {
+          console.log("5.歌词获取", res5);
+        })
+        .catch((error) => {
+          console.log("error=>", error);
+        });
+    </script>
+  </body>
+</html>

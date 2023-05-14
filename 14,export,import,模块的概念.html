@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-bs-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="icon"
+      href="https://i.328888.xyz/2023/04/14/ixDL13.jpeg"
+      type="image/png" />
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.3.0-alpha3/css/bootstrap.css" />
+    <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.3.0-alpha3/js/bootstrap.bundle.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.7.9/vue.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/vue-router/3.6.5/vue-router.min.js"></script>
+    <title>14module.exports,export,import,require,模块的概念</title>
+  </head>
+  <body>
+    <p>
+      模块的概念是指将一个复杂的程序分割成几个相互独立的部分，每个部分都有自己的作用域和接口，可以方便地进行复用和维护。
+      <br />JavaScript中，有多种方式来实现模块化，例如使用匿名闭包函数，全局引入，或者使用ES6的import和export语法
+    </p>
+    <ul>
+      es6的export 与 import 是ES6模块化的两个关键字
+      <li>
+        export用于从模块中导出实时绑定的函数、对象或原始值的引用，以便其他程序可以通过import使用它们
+      </li>
+      <li>import用于在一个模块中加载另一个含有export接口的模块</li>
+    </ul>
+    <ul>
+      你可以使用不同的方式来导出和导入模块中的内容，例如：
+      <li>使用花括号{}来导出和导入多个变量、函数或对象</li>
+      <li>使用as来重命名导出和导入的变量、函数或对象</li>
+      <li>使用*来导入整个模块</li>
+      <li>使用default来导出和导入默认的变量、函数或对象</li>
+    </ul>
+    <ul>
+      <li>export 命令可以出现在模块的任何位置，但必需处于模块顶层。</li>
+      <li>import 命令会提升到整个模块的头部，首先执行</li>
+    </ul>
+    <script type="module">
+      import { name2, sayHello } from "./14.js"; // 导入花括号中的变量和函数
+      console.log(name2);
+      sayHello();
+      import { Person } from "./14.js";
+      let huahua = new Person(name2);
+      console.log(huahua);
+      import * as AllData from "./14.js"; // 导入默认,不需要花括号,导入整个模块
+      console.log(AllData);
+      console.log(AllData.default);
+    </script>
+    <h1>import 命令的特点</h1>
+    <ul>
+      <li>
+        只读属性：不允许在加载模块的脚本里面，改写接口的引用指向
+        <pre>
+import {a} from "./xxx.js"
+a = {}; // error</pre
+        >
+      </li>
+      <li>
+        单例模式：多次重复执行同一句 import
+        语句，那么只会执行一次，而不会执行多次。import
+        同一模块，声明不同接口引用，会声明对应变量，但只执行一次 import 。
+        <pre>
+import { a } from "./xxx.js";
+import { b } from "./xxx.js";
+// 相当于 import { a, b } from "./xxx.js";
+</pre
+        >
+      </li>
+      <li>
+        静态执行特性：import 是静态执行，所以不能使用表达式和变量。
+        <pre>
+import { "f" + "oo" } from "methods";
+// error
+let module = "methods";
+import { foo } from module;
+// error
+if (true) {
+  import { foo } from "method1";
+} else {
+  import { foo } from "method2";
+}// error
+</pre
+        >
+      </li>
+    </ul>
+    <h1>export default的特点有以下几点</h1>
+    <ul>
+      <li>在一个文件或模块中，export default仅有一个，而export可以有多个</li>
+      <li>
+        通过export
+        default导出的内容，在导入时不需要加花括号{}，并且可以自定义名称
+      </li>
+      <li>
+        export
+        default导出的内容，是使用值赋值给新变量，而不是引用。因此，当导出的内容发生变化时，导入的内容不会跟着变化
+      </li>
+    </ul>
+  </body>
+</html>

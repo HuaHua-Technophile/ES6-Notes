@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-bs-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="icon"
+      href="https://i.328888.xyz/2023/04/14/ixDL13.jpeg"
+      type="image/png" />
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <link
+      href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.3.0-alpha3/css/bootstrap.css"
+      rel="stylesheet" />
+    <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.3.0-alpha3/js/bootstrap.bundle.js"></script>
+    <title>
+      3-1includes()数组(字符串)检测是否含指定值startsWith()检测头部是否为指定字符串endsWith()检测尾部是否为指定字符串
+    </title>
+  </head>
+  <body>
+    <script>
+      let string = "apple,banana,orange",
+        array = ["apple", "banana", "orange"];
+      array.includes("banana"); // true
+      string.includes("banana"); // true
+      string.startsWith("apple"); // true
+      string.endsWith("apple"); // false
+      string.startsWith("banana", 6); // true
+      /*这三个方法只返回布尔值，如果需要知道子串的位置，还是得用 indexOf 和 lastIndexOf 。
+这三个方法如果传入了正则表达式而不是字符串，会抛出错误。而 indexOf 和 lastIndexOf 这两个方法，它们会将正则表达式转换为字符串并搜索它。 */
+    </script>
+  </body>
+</html>

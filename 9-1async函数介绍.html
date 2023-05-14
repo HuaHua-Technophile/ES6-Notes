@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-bs-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <link
+      rel="icon"
+      href="https://i.328888.xyz/2023/04/14/ixDL13.jpeg"
+      type="image/png" />
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <link
+      href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.3.0-alpha3/css/bootstrap.css"
+      rel="stylesheet" />
+    <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.3.0-alpha3/js/bootstrap.bundle.js"></script>
+    <title>9-1async函数介绍</title>
+  </head>
+  <body>
+    <p>
+      async是ES7才有的与异步操作有关的关键字，和Promise，Generator有很大关联的。
+      <br />async functionname([param[,param[,...param]]]){statements}
+      <br />name:函数名称<br />param:要传递给函数的参数的名称。
+      <br />statements:函数体语句。
+    </p>
+    <p>（相当于普通的函数声明前，加一个async关键字）</p>
+    <p>
+      async函数是使用async关键字声明的函数。async函数是AsyncFunction构造函数的实例，并且其中允许使用await关键字。
+      <br />async和await关键字让我们可以用一种更简洁的方式写出<strong>基于Promise</strong>的异步行为，而无需刻意地链式调用promise。async函数的默认返回值为一个promise对象
+    </p>
+    <script>
+      async function fn1() {}
+      console.log(fn1());
+      async function fn2() {
+        return "abc";
+        // return 123;
+        // return true;
+        // return null;
+        // return undefined;
+        // return [10, 20, 30];
+        // return { id: 1, uname: 'zhangsan' };
+        // return /\d{2}/;
+        // return new RegExp('\\d{2}');
+        /* return function () {
+          console.log('哈哈哈哈');
+        }; */
+        /* return new Promise((resolve, reject) => {
+          // 返回一个promise对象
+          let num = Math.random();
+          num > 0.5
+            ? resolve('内嵌的promise对象模拟请求成功')
+            : reject('内嵌的promise对象模拟请求失败');
+        }); */
+        //console.log(a); // 输出一个不存在的变量, 会导致一个引用错误
+        //getSum(); // 调用一个不存在的函数, 会导致一个引用错误
+        //throw new Error('哈哈哈,我发生了错误了,好开心啊'); // 主动抛出一个用户自定义错误
+      }
+      console.log(fn2());
+    </script>
+  </body>
+</html>

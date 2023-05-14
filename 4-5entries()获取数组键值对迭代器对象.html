@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-bs-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="icon"
+      href="https://i.328888.xyz/2023/04/14/ixDL13.jpeg"
+      type="image/png" />
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <link
+      href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.3.0-alpha3/css/bootstrap.css"
+      rel="stylesheet" />
+    <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.3.0-alpha3/js/bootstrap.bundle.js"></script>
+    <title>4-5entries()获取数组键值对迭代器对象</title>
+  </head>
+  <body>
+    <p>
+      entries()方法是JavaScript中的一个数组方法，它可以返回一个数组迭代器对象，该对象包含了数组中的键值对。例如：
+    </p>
+    <script>
+      let arr = ["a", "b", "c"];
+      let entries = arr.entries(); // 获取数组的迭代器对象
+      console.log(entries); //Array Iterator {}
+      for (let item of entries) console.log(item); //=>[0, 'a']   =>[1, 'b']   =>[2, 'c']
+    </script>
+  </body>
+</html>

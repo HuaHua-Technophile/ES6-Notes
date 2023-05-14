@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-bs-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="icon"
+      href="https://i.328888.xyz/2023/04/14/ixDL13.jpeg"
+      type="image/png" />
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <link
+      href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.3.0-alpha3/css/bootstrap.css"
+      rel="stylesheet" />
+    <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.3.0-alpha3/js/bootstrap.bundle.js"></script>
+    <title>花花</title>
+  </head>
+  <body>
+    <script>
+      // Array.of()将参数中所有值作为元素形成数组。
+      console.log(Array.of(1, 2, 3, 4)); // [1, 2, 3, 4]
+      console.log(Array.of(1, "2", true)); // [1, '2', true]// 参数值可为不同类型
+      console.log(Array.of()); // []// 参数为空时返回空数组
+    </script>
+    <p>
+      Array.from()是一个静态方法，它可以从一个类数组对象或可迭代对象创建一个新的数组实例。它的基本语法是
+      <br />Array.from(arrayLike[, mapFn[, thisArg]])
+      <br />其中，arrayLike是必须的参数，表示要转换成数组的类数组对象或可迭代对象。mapFn是可选的参数，表示对每个元素执行的映射函数。thisArg是可选的参数，表示执行mapFn时用作this的值。
+    </p>
+    <script>
+      // 例如，你可以用Array.from()从一个字符串创建一个数组²：
+      Array.from("hello"); // ["h", "e", "l", "l", "o"]
+
+      // 或者从一个Set对象创建一个数组²：
+      const set = new Set(["a", "b", "c"]);
+      Array.from(set); // ["a", "b", "c"]
+
+      // 或者从一个类数组对象创建一个数组，并对每个元素进行map操作：
+      const obj = { length: 3, 0: 1, 1: 2, 2: 3 };
+      Array.from(obj, (x) => x + 1); // [2, 3, 4]
+    </script>
+  </body>
+</html>

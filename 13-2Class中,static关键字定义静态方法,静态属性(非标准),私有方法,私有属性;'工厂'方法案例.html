@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-bs-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="icon"
+      href="https://i.328888.xyz/2023/04/14/ixDL13.jpeg"
+      type="image/png" />
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <link
+      href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.3.0-alpha3/css/bootstrap.css"
+      rel="stylesheet" />
+    <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.3.0-alpha3/js/bootstrap.bundle.js"></script>
+    <title>
+      13-2Class中,static关键字定义静态方法,静态属性(非标准),私有方法,私有属性;'工厂'方法案例
+    </title>
+  </head>
+  <body>
+    <p>
+      不会被实例对象继承的属性就是静态属性.ES6提案在class中只有静态方法没有静态属性。ES6后有一个提案提出使用static关键字声明静态属性.这种语法目前还是一个实验性的功能，可能需要使用Babel等工具来转换代码，才能在浏览器中运行。截至2022年1月，这个提案目前处于第三阶段，还没有被正式纳入标准。不过，一些浏览器已经开始支持这个语法，例如Chrome从版本72开始支持。
+      <br />JavaScript中class的静态属性(静态方法)是指定义在***类本身上的属性***，而不是定义在类的实例上的属性
+      <br />静态属性(静态方法)不能通过类的实例来访问，而是直接通过类名来访问。静态属性(静态方法)通常用于存储类相关的常量或工具函数
+    </p>
+    <ol>
+      <li>使用static关键字在类的内部定义</li>
+      <li>或在类的外部使用类名.点运算符来赋值</li>
+    </ol>
+    <p>
+      私有属性(私有方法)通过'#'符号在类的内部定义.意为只能在类内部使用,不能通过类的实例,也不能在类的外部通过点语法调用
+    </p>
+    <script>
+      class Circle {
+        #str = "该园面积为:";
+        #R;
+        #calcArea() {
+          return Math.PI * this.#R * this.#R;
+        } // 定义一个私有方法，用于计算圆面积
+        constructor(r) {
+          this.#R = r; // 在构造函数中给私有属性赋值
+        }
+        static PI = Math.PI; // 用static关键字在类的内部定义一个静态属性 PI
+        getArea() {
+          return this.#str + this.#calcArea(); // 调用私有属性与私有方法
+        } //不用static关键字,为实例方法
+      }
+      Circle.name2 = "圆形"; // 用点语法赋值,在类的外部定义一个静态属性 name2
+      Circle.getPerimeter = function (r) {
+        return 2 * this.PI * r;
+      }; // 用点语法赋值,在类的外部定义一个静态方法
+      console.log(Circle);
+      console.log(Circle.name); //'Circle'
+      console.log(Circle.name2); //访问静态属性 name2 =>'圆形'
+      console.log(Circle.PI); // 访问静态属性PI =>3.141592653589793
+      console.log(Circle.getPerimeter(5)); //访问静态方法perimeter() =>31.41592653589793
+      //console.log(Circle.getArea(5));//对象未实例化,无法访问私有属性,所以无法访问方法area()
+      //console.log(Circle.#str);//Private field '#key' must be declared in an enclosing class
+      //console.log(Circle.#calcArea()); //Private field '#fn' must be declared in an enclosing class
+
+      let circle = new Circle(10); //实例化的对象无法访问静态属性,静态方法
+      console.log(circle);
+      console.log(circle.PI); // undefined
+      console.log(circle.name); // undefined
+      console.log(circle.name2); // undefined
+      console.log(circle.getArea(5)); // 该园面积为:314.1592653589793
+      //console.log(circle.getPerimeter(5)); // circle.perimeter is not a function
+    </script>
+    <p>静态方法的另一种应用场景是“工厂”方法</p>
+    <script>
+      Circle.createBigC = () => new Circle(100); //箭头函数没有this,需要直接指定Circle()类构造函数
+      Circle.createSmallC = function () {
+        return new this(0.1); //普通函数有this,可用this指代类本身
+      };
+      let bigCircle = Circle.createBigC(),
+        SmallCircle = Circle.createSmallC();
+      console.log(bigCircle, SmallCircle);
+    </script>
+  </body>
+</html>

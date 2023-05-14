@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-bs-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="icon"
+      href="https://i.328888.xyz/2023/04/14/ixDL13.jpeg"
+      type="image/png" />
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <link
+      href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.3.0-alpha3/css/bootstrap.css"
+      rel="stylesheet" />
+    <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.3.0-alpha3/js/bootstrap.bundle.js"></script>
+    <title>花花</title>
+  </head>
+  <body>
+    <p>
+      Promise.reject()方法是一个静态函数，它返回一个带有拒绝原因的Promise对象。你可以使用它来创建一个已经被拒绝的Promise，或者将一个thenable对象转换为一个被拒绝的Promise
+    </p>
+    <script>
+      Promise.reject(new Error("出错了")).then(
+        () => {
+          // 不会执行
+        },
+        (error) => {
+          console.error(error); // Error: 出错了
+        }
+      );
+    </script>
+    <p>
+      注意，Promise.reject()方法的参数，会原封不动地作为reject的理由，变成后续方法的参数。这一点与Promise.resolve方法不一致
+    </p>
+    <ol>
+      Promise.reject()方法的使用场景有以下几种：
+      <li>
+        当你需要创建一个已经被拒绝的Promise，或者将一个thenable对象转换为一个被拒绝的Promise
+      </li>
+      <li>当你需要在.then中返回一个被拒绝的Promise，以中断后续的链式调用</li>
+      <li>
+        当你需要在Promise.all()或Promise.race()中返回一个被拒绝的Promise，以影响最终的结果
+      </li>
+    </ol>
+    <script>
+      // 创建一个被拒绝的 Promise
+      let p = Promise.reject("出错了");
+
+      // 在 .then 中返回一个被拒绝的 Promise
+      readFile("file.txt")
+        .then((v) => {
+          if (v != "hello") {
+            return Promise.reject("文件内容不匹配");
+          }
+        })
+        .catch((e) => console.log(e));
+
+      // 在 Promise.all() 中返回一个被拒绝的 Promise
+      Promise.all([
+        readFile("file1.txt"),
+        readFile("file2.txt"),
+        Promise.reject("出错了"),
+      ])
+        .then((values) => {
+          // 不会执行
+        })
+        .catch((e) => console.log(e)); // 出错了
+    </script>
+  </body>
+</html>

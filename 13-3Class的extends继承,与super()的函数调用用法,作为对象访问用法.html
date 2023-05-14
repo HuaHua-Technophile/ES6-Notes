@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-bs-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="icon"
+      href="https://i.328888.xyz/2023/04/14/ixDL13.jpeg"
+      type="image/png" />
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <link
+      href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.3.0-alpha3/css/bootstrap.css"
+      rel="stylesheet" />
+    <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.3.0-alpha3/js/bootstrap.bundle.js"></script>
+    <title>
+      13-3Class的extends继承,与super()的函数调用用法,作为对象访问用法
+    </title>
+  </head>
+  <body>
+    <p>
+      JavaScript中，Class的继承是通过extends关键字实现的，它可以让一个类继承另一个类的属性和方法。子类的构造函数中必须显式调用super().如果子类没有显示声明constructor函数，会自动隐式创建constructor函数并在其内部调用super方法
+    </p>
+    <p>
+      super()关键字是用来调用父类的构造函数或者父类的原型方法的。super()有两种用法，一种是作为函数调用，一种是作为对象访问
+    </p>
+    <ol>
+      <li>
+        当super()作为函数调用时，它代表父类的构造函数，只能在子类的构造函数中使用，它必须在使用this关键字之前和构造函数返回之前被调用。它会调用父类的构造函数并绑定父类的公共字段，之后子类的构造函数可以进一步访问和修改this
+      </li>
+      <li>
+        当super()作为对象访问时，它指向父类的原型对象或者父类本身，取决于是在普通方法中还是静态方法中使用。它可以用来访问父类的原型方法或者静态方法。当通过super()调用父类方法时，super()内部的this指向子类的实例或者子类本身。当通过super()为子类属性赋值时，super()就是this
+      </li>
+    </ol>
+    <script>
+      // super() 作为函数调用
+      class Polygon {
+        constructor(height, width) {
+          this.name = "矩形";
+          this.height = height;
+          this.width = width;
+        }
+      }
+      class Square extends Polygon {
+        constructor(length) {
+          super(length, length); // 调用父类的构造函数
+          this.name = "正方形";
+        }
+      }
+
+      // super() 作为对象访问
+      class C {
+        constructor() {
+          this.x = 11;
+        }
+        change() {
+          this.x = 3;
+        }
+      }
+      class D extends C {
+        constructor() {
+          super(); // 调用父类的构造函数
+          this.x = 90;
+        }
+        f() {
+          super.change(); // 调用父类原型对象上的方法
+          console.log(super.x); // undefined，因为 x 不在父类原型对象或父类本身上
+          console.log(this.x); // 3，因为 x 在子类实例上
+        }
+      }
+    </script>
+  </body>
+</html>

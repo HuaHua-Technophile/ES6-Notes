@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-bs-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="icon"
+      href="https://i.328888.xyz/2023/04/14/ixDL13.jpeg"
+      type="image/png" />
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <link
+      href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.3.0-alpha3/css/bootstrap.css"
+      rel="stylesheet" />
+    <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.3.0-alpha3/js/bootstrap.bundle.js"></script>
+    <title>花花</title>
+  </head>
+  <body>
+    <p>
+      Promise.allSettled()方法是ES2020引入的JavaScript的新特性，它可以接收一个由Promise所组成的可迭代对象，然后返回一个新的Promise，这个新的Promise会在可迭代对象内的所有Promise都已敲定时（包括传递空的可迭代类型），也变成成功状态，并且它的成功值就是可迭代对象内的每个Promise结果的对象数组
+      <br />每个结果对象都有一个status属性，表示Promise的最终状态，要么是"fulfilled"，要么是"rejected"，以及一个value或reason属性，表示Promise的成功值或拒因。这个方法可以用于知道每个Promise的结果，而不管它们是成功了还是被拒了
+    </p>
+    <ol>
+      Promise.allSettled()方法有一些应用场景，比如：
+      <li>
+        等待所有的异步操作结束后再调用。如果我们不关心每个异步操作的结果，只想知道它们是否都结束了，可以使用Promise.allSettled()方法，它会返回一个包含每个异步操作状态和值或拒因的对象数组
+      </li>
+      <li>
+        处理多个接口的响应。如果我们想从最快的接口获取响应，但是最快的接口可能执行失败，那么我们可以使用Promise.any()方法，它会等到一个兑现状态，才会决定新Promise的状态，如果所有的Promise都是拒绝的，那么会报一个AggregateError的错误
+        <br />但是如果我们想获取所有接口的响应，无论成功或失败，那么我们可以使用Promise.allSettled()方法，它会返回一个包含每个接口响应状态和值或原因的对象数组
+      </li>
+    </ol>
+    <ol>
+      Promise.allSettled()方法和Promise.all()方法的主要区别是：
+      <li>
+        Promise.all()方法会在可迭代对象内的所有Promise都变成兑现状态时，返回一个兑现状态的Promise，并且它的兑现值是可迭代对象内的所有Promise的兑现值组成的数组。如果可迭代对象内的任何一个Promise被拒绝了，那么Promise.all()方法返回的Promise就会变成拒绝状态，并且它的拒因就是可迭代对象内的首个被拒绝的Promise的拒因。这个方法适用于处理多个异步任务，且所有的异步任务都得到结果时的情况。
+      </li>
+      <li>
+        Promise.allSettled()方法会在可迭代对象内的所有Promise都已敲定时（包括传递空的可迭代类型），返回一个兑现状态的Promise，并且它的兑现值是可迭代对象内的每个Promise结果的对象数组。每个结果对象都有一个status属性，表示Promise的最终状态，要么是"fulfilled"，要么是"rejected"，以及一个value或reason属性，表示Promise的兑现值或拒因。这个方法适用于知道每个Promise的结果，而不管它们是兑现了还是被拒了。
+      </li>
+    </ol>
+    <script>
+      let p1 = new Promise((resolve, reject) => {
+        let num = Math.random();
+        num > 0.5 ? resolve("1成功:" + num) : reject("1失败:" + num);
+      });
+      let p2 = new Promise((resolve, reject) => {
+        let num = Math.random();
+        num > 0.5 ? resolve("2成功:" + num) : reject("2失败:" + num);
+      });
+      let p3 = new Promise((resolve, reject) => {
+        let num = Math.random();
+        num > 0.5 ? resolve("3成功:" + num) : reject("3失败:" + num);
+      });
+      console.log(p1, p2, p3);
+      Promise.all([p1, p2, p3])
+        .then((res) => {
+          console.log("res=>", res);
+        })
+        .catch((err) => {
+          console.log("err=>", err);
+        });
+    </script>
+  </body>
+</html>

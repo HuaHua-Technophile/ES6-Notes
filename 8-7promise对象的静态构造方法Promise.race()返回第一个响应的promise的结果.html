@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-bs-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="icon"
+      href="https://i.328888.xyz/2023/04/14/ixDL13.jpeg"
+      type="image/png" />
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <link
+      href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.3.0-alpha3/css/bootstrap.css"
+      rel="stylesheet" />
+    <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.3.0-alpha3/js/bootstrap.bundle.js"></script>
+    <title>
+      8-7promise对象的静态构造方法Promise.race()返回第一个响应的promise的结果
+    </title>
+  </head>
+  <body>
+    <p>
+      Promise.race()可以接受一个包含多个promise的数组（或者一般的可迭代对象），并返回一个新的promise，这个promise会在第一个promise解决或拒绝时就解决或拒绝，使用第一个promise的值或原因。这个方法可以用来实现promise的超时或取消，或者在某个特定事件发生时停止等待其他promise
+    </p>
+    <h2>
+      Promise.race()和Promise.all()的主要区别是，Promise.race()只会等待第一个promise解决或拒绝，而Promise.all()会等待所有的promise解决或者任何一个promise拒绝。Promise.race()返回的promise的值或原因只取决于第一个promise，而Promise.all()返回的promise的值是一个包含所有promise的解决值的数组。Promise.race()可以用来实现超时或取消的功能，而Promise.all()可以用来聚合多个异步任务的结果。
+    </h2>
+    <script>
+      let p1 = new Promise((resolve, reject) => {
+        setTimeout(() => {
+          Math.random() > 0.5 ? resolve("1成功") : reject("1失败");
+        }, 300);
+      });
+      let p2 = new Promise((resolve, reject) => {
+        setTimeout(() => {
+          Math.random() > 0.5 ? resolve("2成功") : reject("2失败");
+        }, 400);
+      });
+      let p3 = new Promise((resolve, reject) => {
+        setTimeout(() => {
+          Math.random() > 0.5 ? resolve("3成功") : reject("3失败");
+        }, 100);
+      });
+      console.log("p1=>", p1);
+      console.log("p2=>", p2);
+      console.log("p3=>", p3);
+      Promise.race([p1, p2, p3])
+        .then((res) => {
+          console.log("res=>", res); //只输出p3状态,因为它最快获得响应(通过定时器模拟网络延时)
+        })
+        .catch((err) => {
+          console.log("err=>", err); //只输出p3状态,因为它最快获得响应(通过定时器模拟网络延时)
+        });
+    </script>
+    <ol>
+      Promise.race()的使用场景有以下几种：
+      <li>
+        实现promise的超时功能。你可以创建一个定时器的promise，和一个需要等待的promise，然后使用Promise.race()来比较哪个promise先完成。如果定时器的promise先完成，就表示超时了，你可以拒绝或取消等待的promise。例如：
+      </li>
+      <script>
+        const promise = new Promise((resolve, reject) => {
+          // 某些异步任务
+        });
+        const timeout = new Promise((resolve, reject) => {
+          setTimeout(() => {
+            reject(new Error("1秒钟了，超时了!"));
+          }, 1000);
+        });
+        Promise.race([promise, timeout]).then(
+          (value) => {
+            // promise中封装的异步请求在超时前解决
+          },
+          (error) => {
+            // promise中封装的异步请求被拒绝或超时
+          }
+        );
+      </script>
+      <li>
+        实现promise的取消功能。你可以创建一个取消信号的promise，和一个需要等待的promise，然后使用Promise.race()来比较哪个promise先完成。如果取消信号的promise先完成，就表示用户取消了操作，你可以拒绝或中断等待的promise
+      </li>
+      <script>
+        let cancel = null;
+        const cancelPromise = new Promise((resolve, reject) => {
+          cancel = () => {
+            reject(new Error("取消了异步请求!"));
+          };
+        });
+        const promise2 = new Promise((resolve, reject) => {
+          // 某些异步任务
+        });
+        Promise.race([promise2, cancelPromise]).then(
+          (value) => {
+            // promise中封装的异步请求在取消前解决
+          },
+          (error) => {
+            // promise中封装的异步请求被拒绝或取消
+          }
+        );
+        // 在其他地方调用cancel()来触发取消信号
+      </script>
+      <li>
+        实现优先级选择功能。你可以创建多个不同优先级的promise，然后使用Promise.race()来比较哪个promise先完成。如果高优先级的promise先完成，就表示用户选择了高优先级的操作，你可以忽略或拒绝低优先级的promise
+      </li>
+      <script>
+        const highPriority = new Promise((resolve, reject) => {
+          // some high priority task
+        });
+        const lowPriority = new Promise((resolve, reject) => {
+          // some low priority task
+        });
+        Promise.race([highPriority, lowPriority]).then(
+          (value) => {
+            // high or low priority task resolved first
+          },
+          (error) => {
+            // high or low priority task rejected first
+          }
+        );
+      </script>
+    </ol>
+  </body>
+</html>

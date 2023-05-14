@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-bs-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="icon"
+      href="https://i.328888.xyz/2023/04/14/ixDL13.jpeg"
+      type="image/png" />
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <link
+      href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.3.0-alpha3/css/bootstrap.css"
+      rel="stylesheet" />
+    <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.3.0-alpha3/js/bootstrap.bundle.js"></script>
+    <title>花花</title>
+  </head>
+  <body>
+    <script>
+      console.log(Promise); // Promise是一个构造函数
+      console.log(Promise.prototype);
+
+      let p1 = new Promise(function () {}); // 实例化Promise对象 通过new关键字实例化得到promise对象
+      console.log(p1);
+
+      let p2 = new Promise(function (resolve666, reject999) {
+        // resolve与reject都是回调函数，可以使用任何名字。接受任何类型的单个参数。
+        // resolve( 终值 )函数,可以把等待状态转换为成功状态,并携带终值
+        // reject( 据因 )函数,可以把等待状态转换为失败状态,并携带终值
+        // do something asynchronous which eventually calls either(做一些异步的事情，最终调用两者之一)
+        if (true) resolve666("成功后传入的终值,可以是任何类型"); //fulfilled
+        else reject999("failure reason(失败的原因,也称之为据因)"); //rejected
+      });
+      console.log(p2);
+
+      let p3 = new Promise(function (resolve777) {}); //据因(失败)函数可以省略
+      console.log(p3);
+      let p4 = new Promise(function (undefined, reject888) {}); //终值(成功)函数可以省略
+      console.log(p4);
+    </script>
+  </body>
+</html>
